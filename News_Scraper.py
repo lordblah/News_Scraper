@@ -18,10 +18,14 @@ def scrape_news():
     Scrapes the title of every news article not yet stored and records
     them into news_titles.txt
     '''
+    with open('news_titles.txt','r') as cache:
+        existing = cache.read().splitlines()
+    
     hot_titles = subreddit.get_hot(limit=50)
     with open('news_titles.txt', 'a+') as cache:
         for title in hot_titles:
-            cache.write('{0}\n'.format(str(title))) # Displays as <karma worth> :: <title>
+            if title not in existing:
+                cache.write('{0}\n'.format(str(title)))
 
 while True:
     try:
